@@ -99,7 +99,11 @@ export function VicePageClient() {
   }, [currentComparisonType]);
 
   const handleSelection = async (selectedFeature: string) => {
-    if (currentPair.length !== 2) return;
+    if (
+      currentPair.length !== 2 ||
+      completedComparisons >= totalPossibleComparisons
+    )
+      return;
 
     // Store the selected feature - temporarily highlight for visual feedback
     setCurrentSelection(selectedFeature);
@@ -129,16 +133,19 @@ export function VicePageClient() {
       // Clear the highlight immediately and move to next pair
       setCurrentSelection(null);
 
-      // Short delay before moving to next pair to allow user to see the result
-      setTimeout(() => {
-        setPairIndex((prev) => prev + 1);
+      // Only move to next pair if we haven't completed all comparisons
+      if (newCount < totalPossibleComparisons) {
+        // Short delay before moving to next pair to allow user to see the result
+        setTimeout(() => {
+          setPairIndex((prev) => prev + 1);
 
-        // If we've gone through all pairs (one full cycle), create new shuffled pairs
-        if (pairIndex % featurePairs.length === featurePairs.length - 1) {
-          const newPairs = createPairs(features);
-          setFeaturePairs(newPairs);
-        }
-      }, 300);
+          // If we've gone through all pairs (one full cycle), create new shuffled pairs
+          if (pairIndex % featurePairs.length === featurePairs.length - 1) {
+            const newPairs = createPairs(features);
+            setFeaturePairs(newPairs);
+          }
+        }, 300);
+      }
     } catch (error) {
       console.error("Error saving choice:", error);
       // Make sure to clear selection even if there's an error
@@ -208,7 +215,7 @@ export function VicePageClient() {
           }
         }
       `}</style>
-      <div className="min-h-screen bg-black relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
         <div className="absolute inset-0">
           <Particles
             particleCount={200}
@@ -294,6 +301,23 @@ export function VicePageClient() {
             <div className="flex justify-center items-center h-64">
               <div className="animate-pulse text-[#0BFFFF]">
                 {t("loadingFeatures")}
+              </div>
+            </div>
+          ) : completedComparisons >= totalPossibleComparisons ? (
+            <div className="text-center">
+              <div className="max-w-2xl mx-auto p-8 bg-black/40 border border-[#0BFFFF]/30 backdrop-blur-sm rounded-xl shadow-lg shadow-[#0BFFFF]/10">
+                <h2 className="text-3xl font-bold text-[#0BFFFF] mb-4">
+                  {t("comparisonsCompleted")}
+                </h2>
+                <p className="text-white/80 text-lg mb-8">
+                  {t("comparisonsCompletedDesc")}
+                </p>
+
+                <Link href="/leaderboard">
+                  <Button className="bg-[#0BFFFF] text-black hover:bg-white transition-all px-8 py-6 text-lg font-medium shadow-lg shadow-[#0BFFFF]/20 hover:scale-105">
+                    {t("goToLeaderboard")}
+                  </Button>
+                </Link>
               </div>
             </div>
           ) : currentPair.length === 2 ? (

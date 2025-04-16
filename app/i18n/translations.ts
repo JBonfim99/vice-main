@@ -60,6 +60,10 @@ export const translations = {
     needTwoFeatures:
       "You currently have only one feature. To start comparing and prioritizing, you need at least two features.",
     addAnotherFeature: "Add Another Feature",
+    comparisonsCompleted: "All Comparisons Completed!",
+    comparisonsCompletedDesc:
+      "Thank you for your input! You can now check the results in the leaderboard.",
+    goToLeaderboard: "Go to Leaderboard",
 
     // Comparison Questions
     impactQuestion: "Which feature would have a greater impact?",
@@ -147,6 +151,10 @@ export const translations = {
     needTwoFeatures:
       "Você tem apenas uma funcionalidade. Para começar a comparar e priorizar, você precisa de pelo menos duas funcionalidades.",
     addAnotherFeature: "Adicionar Outra Funcionalidade",
+    comparisonsCompleted: "Todas as Comparações Concluídas!",
+    comparisonsCompletedDesc:
+      "Obrigado pela sua contribuição! Agora você pode verificar os resultados na classificação.",
+    goToLeaderboard: "Ir para Classificação",
 
     // Comparison Questions
     impactQuestion: "Qual funcionalidade teria um impacto maior?",

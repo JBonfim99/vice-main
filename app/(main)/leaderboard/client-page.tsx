@@ -210,7 +210,7 @@ export function LeaderboardClient() {
   };
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
       <div className="absolute inset-0">
         <Particles
           particleCount={200}
