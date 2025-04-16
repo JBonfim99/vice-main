@@ -45,6 +45,7 @@ app
 ## File Conventions
 
 Each action, component, and test has its own file and suffix:
+
 - `.action.ts`: Server actions
 - `.functional.ts`: Functional tests
 - `.integration.ts`: Integration tests
@@ -52,12 +53,14 @@ Each action, component, and test has its own file and suffix:
 ## Getting Started
 
 1. Install dependencies:
+
 ```bash
 npm install
 # or yarn install
 ```
 
 2. Run the development server:
+
 ```bash
 npm run dev
 # or
@@ -79,3 +82,50 @@ yarn dev
 - **Build for Production**: `npm run build`
 - **Production Start**: `npm run start`
 - **Linting**: `npm run lint`
+
+## Batalhas de Features
+
+Além do modo tradicional de priorização, o VICE agora suporta batalhas compartilháveis! Você pode:
+
+1. Criar uma nova batalha com suas features
+2. Compartilhar o link com sua equipe/usuários
+3. Acompanhar os resultados em tempo real
+
+### Setup do KV Storage
+
+Para habilitar as batalhas, você precisa configurar o Vercel KV:
+
+```bash
+# Dar permissão ao script
+chmod +x setup-kv.sh
+
+# Executar setup
+./setup-kv.sh
+```
+
+O script vai:
+
+1. Instalar o Vercel CLI (se necessário)
+2. Fazer login no Vercel
+3. Criar um KV Database
+4. Configurar as variáveis de ambiente
+
+### Criando uma Batalha
+
+1. Acesse a página inicial
+2. Clique em "Criar Batalha"
+3. Preencha:
+   - Título da batalha
+   - Descrição (opcional)
+   - Lista de features (uma por linha)
+   - Selecione os critérios de comparação
+4. Clique em "Criar Batalha"
+5. Compartilhe o link gerado!
+
+### Como Funciona
+
+- Cada batalha tem um ID único
+- Os participantes não precisam fazer login
+- Votos são contabilizados em tempo real
+- Você pode ver os resultados a qualquer momento
+- O link é permanente e pode ser compartilhado livremente
