@@ -13,6 +13,24 @@ export const translations = {
     prioritizeFeatures: "Prioritize Features",
     getStartedDesc:
       "Start prioritizing your features now and make better product decisions.",
+    createBattle: "Create Battle",
+    myBattles: "My Battles",
+    noBattlesYet: "You haven't created any battles yet.",
+    editBattle: "Edit",
+    deleteBattle: "Delete",
+    confirmDelete: "Are you sure you want to delete this battle?",
+    features: "features",
+    battleTitle: "Battle Title",
+    battleDescription: "Description (optional)",
+    featuresForComparison: "Features for Comparison",
+    enterFeaturePerLine: "Enter one feature per line...",
+    explainContext: "Explain the context for participants...",
+    cancel: "Cancel",
+    creating: "Creating...",
+    savingChanges: "Save Changes",
+    deleteError: "Error deleting battle. Please try again.",
+    viewResults: "View Results",
+    total: "Total",
 
     // Home Page
     homeTitle:
@@ -51,7 +69,7 @@ export const translations = {
 
     // Choose Page
     progress: "Progress",
-    totalComparisons: "TOTAL COMPARISONS",
+    totalComparisons: "Total Comparisons",
     loadingFeatures: "Loading features...",
     noFeatures:
       "No features available. Try adding features on the previous page.",
@@ -92,6 +110,20 @@ export const translations = {
     resetError: "Error resetting scores:",
     thankYouForVoting: "Thank you for voting!",
     voteAgain: "Vote Again",
+
+    comparisonCriteria: "Comparison Criteria",
+    allowMultipleVotes: "Allow multiple votes",
+    showResults: "Show results",
+    battleTitlePlaceholder: "Ex: Which feature do you prefer for the new app?",
+
+    battleNotFound: "Battle not found",
+    errorLoadingBattle: "Error loading battle",
+    allComparisonsCompleted: "You have completed all possible comparisons!",
+
+    visitors: "Visitors",
+    criteria: "Criteria",
+    share: "Share",
+    linkCopied: "Link copied!",
   },
   pt: {
     // Common
@@ -105,11 +137,30 @@ export const translations = {
     prioritizeFeatures: "Priorizar Funcionalidades",
     getStartedDesc:
       "Comece a priorizar suas funcionalidades agora e tome melhores decisões de produto.",
+    createBattle: "Criar Batalha",
+    myBattles: "Minhas Batalhas",
+    noBattlesYet: "Você ainda não criou nenhuma batalha.",
+    editBattle: "Editar",
+    deleteBattle: "Excluir",
+    confirmDelete: "Tem certeza de que deseja excluir esta batalha?",
+    features: "funcionalidades",
+    battleTitle: "Título da Batalha",
+    battleDescription: "Descrição (opcional)",
+    featuresForComparison: "Funcionalidades para Comparação",
+    enterFeaturePerLine: "Digite uma funcionalidade por linha...",
+    explainContext: "Explique o contexto para os participantes...",
+    cancel: "Cancelar",
+    creating: "Criando...",
+    savingChanges: "Salvar Mudanças",
+    deleteError:
+      "Erro ao excluir a batalha. Por favor, tente novamente mais tarde.",
+    viewResults: "Ver Resultados",
+    total: "Total",
 
     // Home Page
     homeTitle:
       "Um framework dinâmico para tomar decisões de produto que evolui com seu pensamento",
-    vibeAndIntuitionTitle: "Sensação & Intuição",
+    vibeAndIntuitionTitle: "Sensação & Intução",
     vibeAndIntuitionDesc:
       "Tome decisões que fazem sentido com um framework que abraça o julgamento humano",
     dataAndLogicTitle: "Dados & Lógica",
@@ -144,7 +195,7 @@ export const translations = {
 
     // Choose Page
     progress: "Progresso",
-    totalComparisons: "TOTAL DE COMPARAÇÕES",
+    totalComparisons: "Total de Comparações",
     loadingFeatures: "Carregando funcionalidades...",
     noFeatures:
       "Nenhuma funcionalidade disponível. Tente adicionar funcionalidades na página anterior.",
@@ -185,19 +236,51 @@ export const translations = {
     resetError: "Erro ao resetar pontuações:",
     thankYouForVoting: "Obrigado por votar!",
     voteAgain: "Votar Novamente",
+
+    comparisonCriteria: "Critérios de Comparação",
+    allowMultipleVotes: "Permitir votos múltiplos",
+    showResults: "Mostrar resultados",
+    battleTitlePlaceholder: "Ex: Qual feature você prefere para o novo app?",
+
+    battleNotFound: "Batalha não encontrada",
+    errorLoadingBattle: "Erro ao carregar batalha",
+    allComparisonsCompleted: "Você completou todas as comparações possíveis!",
+
+    visitors: "Visitantes",
+    criteria: "Critérios",
+    share: "Compartilhar",
+    linkCopied: "Link copiado!",
   },
   es: {
     // Common
     featureHub: "Central de Funcionalidades",
-    loading: "Carregando...",
-    save: "Salvar",
-    update: "Atualizar",
+    loading: "Cargando...",
+    save: "Guardar",
+    update: "Actualizar",
     continue: "Continuar",
-    saving: "Salvando...",
+    saving: "Guardando...",
     allRightsReserved: "Todos los Derechos Reservados",
     prioritizeFeatures: "Priorizar Funcionalidades",
     getStartedDesc:
       "Comience a priorizar sus funcionalidades ahora y tome mejores decisiones de producto.",
+    createBattle: "Crear Batalla",
+    myBattles: "Mis Batallas",
+    noBattlesYet: "Aún no has creado ninguna batalla.",
+    editBattle: "Editar",
+    deleteBattle: "Eliminar",
+    confirmDelete: "¿Estás seguro de que quieres eliminar esta batalla?",
+    features: "funcionalidades",
+    battleTitle: "Título de la Batalla",
+    battleDescription: "Descripción (opcional)",
+    featuresForComparison: "Funcionalidades para Comparación",
+    enterFeaturePerLine: "Ingrese una funcionalidad por línea...",
+    explainContext: "Explique el contexto para los participantes...",
+    cancel: "Cancelar",
+    creating: "Creando...",
+    savingChanges: "Guardar Cambios",
+    deleteError: "Error al eliminar la batalla. Por favor, intente nuevamente.",
+    viewResults: "Ver Resultados",
+    total: "Total",
 
     // Home Page
     homeTitle:
@@ -237,7 +320,7 @@ export const translations = {
 
     // Choose Page
     progress: "Progreso",
-    totalComparisons: "TOTAL DE COMPARACIONES",
+    totalComparisons: "Total de Comparaciones",
     loadingFeatures: "Cargando funcionalidades...",
     noFeatures:
       "No hay funcionalidades disponibles. Intente agregar funcionalidades en la página anterior.",
@@ -278,6 +361,22 @@ export const translations = {
     resetError: "Error al restablecer puntuaciones:",
     thankYouForVoting: "¡Gracias por votar!",
     voteAgain: "Votar de Nuevo",
+
+    comparisonCriteria: "Criterios de Comparación",
+    allowMultipleVotes: "Permitir votos múltiples",
+    showResults: "Mostrar resultados",
+    battleTitlePlaceholder:
+      "Ej: ¿Qué funcionalidad prefieres para la nueva app?",
+
+    battleNotFound: "Batalla no encontrada",
+    errorLoadingBattle: "Error al cargar la batalla",
+    allComparisonsCompleted:
+      "¡Has completado todas las comparaciones posibles!",
+
+    visitors: "Visitantes",
+    criteria: "Criterios",
+    share: "Compartir",
+    linkCopied: "¡Link copiado!",
   },
 };
 

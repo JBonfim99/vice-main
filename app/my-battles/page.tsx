@@ -67,19 +67,17 @@ export default function MyBattles() {
 
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold text-white">Minhas Batalhas</h2>
+            <h2 className="text-3xl font-bold text-white">{t("myBattles")}</h2>
             <Link href="/battle/new">
               <Button className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20">
-                Criar Nova Batalha
+                {t("createBattle")}
               </Button>
             </Link>
           </div>
 
           {battles.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-400 text-lg mb-6">
-                Você ainda não criou nenhuma batalha.
-              </p>
+              <p className="text-gray-400 text-lg mb-6">{t("noBattlesYet")}</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-6">
@@ -107,7 +105,7 @@ export default function MyBattles() {
                         )}
                         <div className="mt-2">
                           <span className="text-[#0BFFFF] text-xs">
-                            {battle.features.length} funcionalidades
+                            {battle.features.length} {t("features")}
                           </span>
                         </div>
                       </div>
@@ -115,6 +113,11 @@ export default function MyBattles() {
                   </Link>
 
                   <div className="absolute top-4 right-4 z-30 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <Link href={`/battle/${battle.id}/results`}>
+                      <Button className="bg-[#0BFFFF]/20 text-[#0BFFFF] hover:bg-[#0BFFFF]/30">
+                        {t("viewResults")}
+                      </Button>
+                    </Link>
                     <Button
                       onClick={(e) => {
                         e.preventDefault();
@@ -122,7 +125,7 @@ export default function MyBattles() {
                       }}
                       className="bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30"
                     >
-                      Editar
+                      {t("editBattle")}
                     </Button>
                     <Button
                       onClick={(e) => {
@@ -131,7 +134,7 @@ export default function MyBattles() {
                       }}
                       className="bg-red-500/20 text-red-400 hover:bg-red-500/30"
                     >
-                      Excluir
+                      {t("deleteBattle")}
                     </Button>
                   </div>
                 </div>

@@ -110,7 +110,7 @@ export default function NewBattlePage() {
           <form onSubmit={handleSubmit} className="space-y-8">
             <div>
               <Label htmlFor="title" className="text-xl text-white mb-4 block">
-                Título da Batalha
+                {t("battleTitle")}
               </Label>
               <input
                 type="text"
@@ -119,7 +119,7 @@ export default function NewBattlePage() {
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, title: e.target.value }))
                 }
-                placeholder="Ex: Qual feature você prefere para o novo app?"
+                placeholder={t("battleTitlePlaceholder")}
                 className="w-full p-4 bg-black/40 border border-[#0BFFFF]/30 text-white placeholder-gray-500 rounded-lg shadow-lg shadow-[#0BFFFF]/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#0BFFFF]/50 focus:border-transparent transition-all"
                 required
               />
@@ -130,7 +130,7 @@ export default function NewBattlePage() {
                 htmlFor="description"
                 className="text-xl text-white mb-4 block"
               >
-                Descrição (opcional)
+                {t("battleDescription")}
               </Label>
               <textarea
                 id="description"
@@ -141,7 +141,7 @@ export default function NewBattlePage() {
                     description: e.target.value,
                   }))
                 }
-                placeholder="Explique o contexto para os participantes..."
+                placeholder={t("explainContext")}
                 className="w-full p-4 bg-black/40 border border-[#0BFFFF]/30 text-white placeholder-gray-500 rounded-lg shadow-lg shadow-[#0BFFFF]/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#0BFFFF]/50 focus:border-transparent transition-all resize-none"
                 rows={3}
               />
@@ -152,7 +152,7 @@ export default function NewBattlePage() {
                 htmlFor="features"
                 className="text-xl text-white mb-4 block"
               >
-                Features para Comparação
+                {t("featuresForComparison")}
               </Label>
               <textarea
                 id="features"
@@ -160,7 +160,7 @@ export default function NewBattlePage() {
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, features: e.target.value }))
                 }
-                placeholder="Digite uma feature por linha..."
+                placeholder={t("enterFeaturePerLine")}
                 className="w-full p-4 bg-black/40 border border-[#0BFFFF]/30 text-white placeholder-gray-500 rounded-lg shadow-lg shadow-[#0BFFFF]/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#0BFFFF]/50 focus:border-transparent transition-all resize-none"
                 rows={10}
                 required
@@ -169,7 +169,7 @@ export default function NewBattlePage() {
 
             <div className="space-y-4">
               <Label className="text-xl text-white mb-4 block">
-                Critérios de Comparação
+                {t("comparisonCriteria")}
               </Label>
 
               <div className="flex flex-wrap gap-4">
@@ -188,7 +188,7 @@ export default function NewBattlePage() {
                     }
                     className="form-checkbox text-[#0BFFFF] rounded border-[#0BFFFF]/30 bg-black/40"
                   />
-                  <span>Impacto</span>
+                  <span>{t("impact")}</span>
                 </label>
 
                 <label className="flex items-center space-x-2 text-white cursor-pointer">
@@ -206,7 +206,7 @@ export default function NewBattlePage() {
                     }
                     className="form-checkbox text-[#0BFFFF] rounded border-[#0BFFFF]/30 bg-black/40"
                   />
-                  <span>Facilidade</span>
+                  <span>{t("ease")}</span>
                 </label>
 
                 <label className="flex items-center space-x-2 text-white cursor-pointer">
@@ -224,7 +224,7 @@ export default function NewBattlePage() {
                     }
                     className="form-checkbox text-[#0BFFFF] rounded border-[#0BFFFF]/30 bg-black/40"
                   />
-                  <span>Confiança</span>
+                  <span>{t("confidence")}</span>
                 </label>
               </div>
 
@@ -244,7 +244,7 @@ export default function NewBattlePage() {
                     }
                     className="form-checkbox text-[#0BFFFF] rounded border-[#0BFFFF]/30 bg-black/40"
                   />
-                  <span>Permitir votos múltiplos</span>
+                  <span>{t("allowMultipleVotes")}</span>
                 </label>
 
                 <label className="flex items-center space-x-2 text-white cursor-pointer">
@@ -262,7 +262,7 @@ export default function NewBattlePage() {
                     }
                     className="form-checkbox text-[#0BFFFF] rounded border-[#0BFFFF]/30 bg-black/40"
                   />
-                  <span>Mostrar resultados</span>
+                  <span>{t("showResults")}</span>
                 </label>
               </div>
             </div>
@@ -279,7 +279,7 @@ export default function NewBattlePage() {
                   type="button"
                   className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105"
                 >
-                  Cancelar
+                  {t("cancel")}
                 </Button>
               </Link>
 
@@ -290,7 +290,7 @@ export default function NewBattlePage() {
                   isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
-                {isSubmitting ? "Criando..." : "Criar Batalha"}
+                {isSubmitting ? t("creating") : t("createBattle")}
               </Button>
             </div>
           </form>

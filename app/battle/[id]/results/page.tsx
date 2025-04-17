@@ -135,25 +135,25 @@ export default function BattleResultsPage({
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
             <div className="bg-black/40 border border-[#0BFFFF]/30 rounded-lg p-4">
-              <p className="text-[#0BFFFF] text-sm">Total de Comparações</p>
+              <p className="text-[#0BFFFF] text-sm">{t("totalComparisons")}</p>
               <p className="text-white text-2xl font-bold">
                 {battle.comparison_count}
               </p>
             </div>
             <div className="bg-black/40 border border-[#0BFFFF]/30 rounded-lg p-4">
-              <p className="text-[#0BFFFF] text-sm">Visitantes</p>
+              <p className="text-[#0BFFFF] text-sm">{t("visitors")}</p>
               <p className="text-white text-2xl font-bold">
                 {battle.total_visitors}
               </p>
             </div>
             <div className="bg-black/40 border border-[#0BFFFF]/30 rounded-lg p-4">
-              <p className="text-[#0BFFFF] text-sm">Features</p>
+              <p className="text-[#0BFFFF] text-sm">{t("features")}</p>
               <p className="text-white text-2xl font-bold">
                 {battle.features.length}
               </p>
             </div>
             <div className="bg-black/40 border border-[#0BFFFF]/30 rounded-lg p-4">
-              <p className="text-[#0BFFFF] text-sm">Critérios</p>
+              <p className="text-[#0BFFFF] text-sm">{t("criteria")}</p>
               <p className="text-white text-2xl font-bold">
                 {Object.values(battle.settings).filter(Boolean).length}
               </p>
@@ -161,88 +161,104 @@ export default function BattleResultsPage({
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-black/40 border border-[#0BFFFF]/30 rounded-xl overflow-hidden backdrop-blur-sm shadow-lg shadow-[#0BFFFF]/10">
-            <div className="grid grid-cols-16 py-4 px-4 border-b border-[#0BFFFF]/30 text-sm font-medium text-gray-400 uppercase tracking-wider">
-              <div className="col-span-1 text-center">Rank</div>
-              <div className="col-span-4">Feature</div>
-              <div className="col-span-2 text-center">Total</div>
-              {battle.settings.compareImpact && (
-                <div className="col-span-2 text-center">Impacto</div>
-              )}
-              {battle.settings.compareEase && (
-                <div className="col-span-2 text-center">Facilidade</div>
-              )}
-              {battle.settings.compareConfidence && (
-                <div className="col-span-2 text-center">Confiança</div>
-              )}
-            </div>
-
-            {scores.map((score, index) => (
-              <div
-                key={score.name}
-                className="grid grid-cols-16 py-4 px-4 items-center hover:bg-white/5 transition-colors"
-              >
-                <div className="col-span-1 text-center font-medium text-[#0BFFFF]">
-                  {index + 1}
-                </div>
-                <div className="col-span-4 text-white font-medium">
-                  {score.name}
-                </div>
-                <div className="col-span-2 text-center">
-                  <div className="inline-block px-3 py-1 rounded-full bg-[#0BFFFF]/20 text-[#0BFFFF] font-medium">
-                    {score.total}
-                  </div>
-                </div>
-                {battle.settings.compareImpact && (
-                  <div className="col-span-2 text-center">
-                    <div className="inline-block px-2 py-1 rounded-full bg-[#FF5757]/20 text-[#FF5757] font-medium">
-                      {score.impact}
-                    </div>
-                  </div>
-                )}
-                {battle.settings.compareEase && (
-                  <div className="col-span-2 text-center">
-                    <div className="inline-block px-2 py-1 rounded-full bg-[#4CAF50]/20 text-[#4CAF50] font-medium">
-                      {score.ease}
-                    </div>
-                  </div>
-                )}
-                {battle.settings.compareConfidence && (
-                  <div className="col-span-2 text-center">
-                    <div className="inline-block px-2 py-1 rounded-full bg-[#0BFFFF]/20 text-[#0BFFFF] font-medium">
-                      {score.confidence}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
+        <div className="max-w-4xl mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold text-white">
+              {t("featureLeaderboard")}
+            </h2>
+            <Link href={`/battle/${params.id}`}>
+              <Button className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20">
+                {t("goToSelection")}
+              </Button>
+            </Link>
           </div>
 
-          <div className="flex justify-center gap-4 mt-8">
-            {!battle.settings.allowMultipleVotes &&
-              JSON.parse(localStorage.getItem(`votes_${battle.id}`) || "0") <
-                (battle.features.length * (battle.features.length - 1)) / 2 && (
-                <Link href={`/battle/${battle.id}`}>
-                  <Button className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105">
-                    Continuar Votando
-                  </Button>
-                </Link>
-              )}
-
-            <div className="relative">
-              <Button
-                onClick={handleShare}
-                className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105"
-              >
-                Compartilhar
-              </Button>
-              {showCopyMessage && (
-                <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-[#0BFFFF]/20 text-[#0BFFFF] px-4 py-2 rounded-lg text-sm backdrop-blur-sm border border-[#0BFFFF]/30">
-                  Link copiado!
-                </div>
-              )}
+          {scores.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-400 text-lg mb-6">
+                {t("noFeaturesFound")}
+              </p>
             </div>
+          ) : (
+            <div className="bg-black/40 border border-[#0BFFFF]/30 rounded-lg overflow-hidden backdrop-blur-sm">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-[#0BFFFF]/30">
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#0BFFFF]">
+                      {t("rank")}
+                    </th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#0BFFFF]">
+                      {t("feature")}
+                    </th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-[#0BFFFF]">
+                      {t("impact")}
+                    </th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-[#0BFFFF]">
+                      {t("ease")}
+                    </th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-[#0BFFFF]">
+                      {t("confidence")}
+                    </th>
+                    <th className="px-6 py-4 text-center text-sm font-medium text-[#0BFFFF]">
+                      {t("total")}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {scores.map((score, index) => (
+                    <tr
+                      key={score.name}
+                      className="border-b border-[#0BFFFF]/10 last:border-0 hover:bg-[#0BFFFF]/5 transition-colors"
+                    >
+                      <td className="px-6 py-4 text-left text-sm text-white">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 text-left text-sm text-white">
+                        {score.name}
+                      </td>
+                      <td className="px-6 py-4 text-center text-sm text-white">
+                        {score.impact}
+                      </td>
+                      <td className="px-6 py-4 text-center text-sm text-white">
+                        {score.ease}
+                      </td>
+                      <td className="px-6 py-4 text-center text-sm text-white">
+                        {score.confidence}
+                      </td>
+                      <td className="px-6 py-4 text-center text-sm text-white">
+                        {score.total}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        <div className="flex justify-center gap-4 mt-8">
+          {!battle.settings.allowMultipleVotes &&
+            JSON.parse(localStorage.getItem(`votes_${battle.id}`) || "0") <
+              (battle.features.length * (battle.features.length - 1)) / 2 && (
+              <Link href={`/battle/${battle.id}`}>
+                <Button className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105">
+                  Continuar Votando
+                </Button>
+              </Link>
+            )}
+
+          <div className="relative">
+            <Button
+              onClick={handleShare}
+              className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105"
+            >
+              {t("share")}
+            </Button>
+            {showCopyMessage && (
+              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-[#0BFFFF]/20 text-[#0BFFFF] px-4 py-2 rounded-lg text-sm backdrop-blur-sm border border-[#0BFFFF]/30">
+                {t("linkCopied")}
+              </div>
+            )}
           </div>
         </div>
       </main>

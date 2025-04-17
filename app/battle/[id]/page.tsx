@@ -26,6 +26,7 @@ export default function BattlePage({ params }: { params: { id: string } }) {
   const [hasVoted, setHasVoted] = useState(false);
   const [totalComparisons, setTotalComparisons] = useState(0);
   const [userVoteCount, setUserVoteCount] = useState(0);
+  const [isOwner, setIsOwner] = useState(false);
 
   // Carregar batalha e verificar se já votou
   useEffect(() => {
@@ -33,10 +34,16 @@ export default function BattlePage({ params }: { params: { id: string } }) {
       try {
         const response = await fetch(`/api/battles?id=${params.id}`);
         if (!response.ok) {
-          throw new Error("Batalha não encontrada");
+          throw new Error(t("battleNotFound"));
         }
         const data = await response.json();
         setBattle(data);
+
+        // Verificar se é o dono da batalha
+        const storedBattles = JSON.parse(
+          localStorage.getItem("user_battles") || "[]"
+        );
+        setIsOwner(storedBattles.some((b: Battle) => b.id === params.id));
 
         // Registrar visitante
         await fetch(`/api/battles/${params.id}/visitor`, {
@@ -63,9 +70,7 @@ export default function BattlePage({ params }: { params: { id: string } }) {
 
         setIsLoading(false);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Erro ao carregar batalha"
-        );
+        setError(err instanceof Error ? err.message : t("errorLoadingBattle"));
         setIsLoading(false);
       }
     };
@@ -266,7 +271,7 @@ export default function BattlePage({ params }: { params: { id: string } }) {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Você completou todas as comparações possíveis!
+                  {t("allComparisonsCompleted")}
                 </p>
               )}
 
@@ -355,11 +360,12 @@ export default function BattlePage({ params }: { params: { id: string } }) {
           </>
         )}
 
-        {battle.settings.showResults && (
+        {(battle.settings.showResults ||
+          (!battle.settings.showResults && isOwner)) && (
           <div className="flex justify-center mt-12">
             <Link href={`/battle/${battle.id}/results`}>
               <Button className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105">
-                Ver Resultados
+                {t("viewResults")}
               </Button>
             </Link>
           </div>
