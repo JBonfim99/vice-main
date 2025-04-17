@@ -102,3 +102,10 @@ export async function updateBattle(
   await redis.set(`battle:${id}`, JSON.stringify(updatedBattle));
   return updatedBattle;
 }
+
+export async function deleteBattle(id: string): Promise<void> {
+  const exists = await redis.exists(`battle:${id}`);
+  if (!exists) throw new Error("Battle not found");
+
+  await redis.del(`battle:${id}`);
+}

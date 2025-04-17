@@ -27,11 +27,26 @@ export default function MyBattles() {
     return () => window.removeEventListener("storage", loadBattles);
   }, []);
 
-  const handleDelete = (battleId: string) => {
+  const handleDelete = async (battleId: string) => {
     if (confirm("Tem certeza que deseja excluir esta batalha?")) {
-      const updatedBattles = battles.filter((battle) => battle.id !== battleId);
-      localStorage.setItem("user_battles", JSON.stringify(updatedBattles));
-      setBattles(updatedBattles);
+      try {
+        const response = await fetch(`/api/battles/${battleId}`, {
+          method: "DELETE",
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao excluir batalha");
+        }
+
+        const updatedBattles = battles.filter(
+          (battle) => battle.id !== battleId
+        );
+        localStorage.setItem("user_battles", JSON.stringify(updatedBattles));
+        setBattles(updatedBattles);
+      } catch (error) {
+        console.error("Erro ao excluir batalha:", error);
+        alert("Erro ao excluir batalha. Por favor, tente novamente.");
+      }
     }
   };
 
@@ -76,20 +91,22 @@ export default function MyBattles() {
                   <Link href={`/battle/${battle.id}`}>
                     <PixelCard
                       variant="blue"
-                      className="w-full cursor-pointer"
-                      gap={6}
+                      className="w-full cursor-pointer h-32"
+                      gap={4}
                       speed={40}
                       colors="#0BFFFF,#0ea5e9,#e0f2fe"
                     >
-                      <div className="absolute inset-0 flex flex-col justify-center p-8 z-20">
-                        <h3 className="text-2xl font-bold text-white mb-2">
+                      <div className="absolute inset-0 flex flex-col justify-center p-4 z-20">
+                        <h3 className="text-xl font-bold text-white mb-1 truncate">
                           {battle.title}
                         </h3>
                         {battle.description && (
-                          <p className="text-gray-400">{battle.description}</p>
+                          <p className="text-gray-400 text-sm truncate">
+                            {battle.description}
+                          </p>
                         )}
-                        <div className="mt-4">
-                          <span className="text-[#0BFFFF] text-sm">
+                        <div className="mt-2">
+                          <span className="text-[#0BFFFF] text-xs">
                             {battle.features.length} funcionalidades
                           </span>
                         </div>

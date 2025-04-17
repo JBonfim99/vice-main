@@ -1,4 +1,4 @@
-export type Language = "en" | "pt";
+export type Language = "en" | "pt" | "es";
 
 export const translations = {
   en: {
@@ -90,6 +90,8 @@ export const translations = {
     resetSuccess:
       "All scores have been reset and comparison history has been cleared.",
     resetError: "Error resetting scores:",
+    thankYouForVoting: "Thank you for voting!",
+    voteAgain: "Vote Again",
   },
   pt: {
     // Common
@@ -181,5 +183,102 @@ export const translations = {
     resetSuccess:
       "Todas as pontuações foram resetadas e o histórico de comparações foi limpo.",
     resetError: "Erro ao resetar pontuações:",
+    thankYouForVoting: "Obrigado por votar!",
+    voteAgain: "Votar Novamente",
+  },
+  es: {
+    // Common
+    featureHub: "Central de Funcionalidades",
+    loading: "Carregando...",
+    save: "Salvar",
+    update: "Atualizar",
+    continue: "Continuar",
+    saving: "Salvando...",
+    allRightsReserved: "Todos los Derechos Reservados",
+    prioritizeFeatures: "Priorizar Funcionalidades",
+    getStartedDesc:
+      "Comience a priorizar sus funcionalidades ahora y tome mejores decisiones de producto.",
+
+    // Home Page
+    homeTitle:
+      "Un framework dinámico para tomar decisiones de producto que evoluciona con su pensamiento",
+    vibeAndIntuitionTitle: "Sensación & Intuición",
+    vibeAndIntuitionDesc:
+      "Tome decisiones que hacen sentido con un framework que abraza el juicio humano",
+    dataAndLogicTitle: "Datos & Lógica",
+    dataAndLogicDesc:
+      "Combine métricas cuantitativas con insights cualitativos para decisiones equilibradas",
+    easyToUseTitle: "Fácil de Usar",
+    easyToUseDesc:
+      "Interfaz simple que te guía a través del proceso de priorización",
+    getStartedTitle: "Comenzar",
+
+    // Add Features Page
+    defineFeatures:
+      "Defina las funcionalidades que desea agregar a su experiencia — una por línea",
+    yourFeatures: "Sus Funcionalidades",
+    featuresSaved: "funcionalidades guardadas",
+    enterFeatures: "Ingrese una funcionalidad por línea...",
+    featureExamples: `Por ejemplo:
+- Sistema de autenticación de usuarios
+- Alternar tema claro/oscuro
+- Diseño responsivo del panel`,
+    enterOnePerLine:
+      "Ingrese un título de funcionalidad por línea. Esto actualizará su lista.",
+    updateAndContinue: "Actualizar y Continuar",
+    saveAndContinue: "Guardar y Continuar",
+    featuresAdded: "Funcionalidades agregadas:",
+    andMore: "y",
+    more: "más",
+    featuresSavedSuccess: "¡Sus funcionalidades se han guardado!",
+    provideFeature: "Por favor, proporcione al menos una funcionalidad.",
+    saveFailed:
+      "Error al guardar sus funcionalidades. Por favor, intente nuevamente.",
+
+    // Choose Page
+    progress: "Progreso",
+    totalComparisons: "TOTAL DE COMPARACIONES",
+    loadingFeatures: "Cargando funcionalidades...",
+    noFeatures:
+      "No hay funcionalidades disponibles. Intente agregar funcionalidades en la página anterior.",
+    viewLeaderboard: "Ver Clasificación",
+    oneMoreFeature: "Más Una Funcionalidad Necesaria",
+    needTwoFeatures:
+      "Usted tiene solo una funcionalidad. Para comenzar a comparar y priorizar, necesita al menos dos funcionalidades.",
+    addAnotherFeature: "Agregar Otra Funcionalidad",
+    comparisonsCompleted: "¡Todas las Comparaciones Completas!",
+    comparisonsCompletedDesc:
+      "¡Gracias por su contribución! Ahora puede verificar los resultados en la clasificación.",
+    goToLeaderboard: "Ir a Clasificación",
+
+    // Comparison Questions
+    impactQuestion: "¿Qué funcionalidad tendría un impacto mayor?",
+    easeQuestion: "¿Qué funcionalidad sería más fácil de implementar?",
+    confidenceQuestion: "¿Qué funcionalidad está más confiada?",
+
+    // Leaderboard Page
+    featureLeaderboard: "Clasificación de Funcionalidades",
+    rank: "#",
+    feature: "Funcionalidad",
+    viceScore: "Puntuación Vice",
+    impact: "Impacto",
+    ease: "Facilidad",
+    confidence: "Confianza",
+    winRate: "Tasa de Victoria",
+    goToSelection: "Ir a Selección",
+    addFeatures: "Agregar Funcionalidades",
+    resetScores: "Restablecer Puntuaciones",
+    resetting: "Restableciendo...",
+    noFeaturesFound:
+      "No se encontraron funcionalidades. Agregue algunas funcionalidades para comenzar a construir su clasificación.",
+    resetConfirm:
+      "¿Está seguro de que desea restablecer todas las puntuaciones y borrar el historial de comparación? Esta acción no se puede deshacer.",
+    resetSuccess:
+      "Todas las puntuaciones se han restablecido y el historial de comparación se ha borrado.",
+    resetError: "Error al restablecer puntuaciones:",
+    thankYouForVoting: "¡Gracias por votar!",
+    voteAgain: "Votar de Nuevo",
   },
 };
+
+export type TranslationKey = keyof typeof translations.en;

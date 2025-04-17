@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { updateBattle } from "@/lib/kv";
+import { updateBattle, deleteBattle } from "@/lib/kv";
 import { BattleCreation } from "@/types/battle";
 
 export async function PUT(
@@ -27,6 +27,22 @@ export async function PUT(
     console.error("Error updating battle:", error);
     return NextResponse.json(
       { error: "Failed to update battle" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    await deleteBattle(params.id);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting battle:", error);
+    return NextResponse.json(
+      { error: "Failed to delete battle" },
       { status: 500 }
     );
   }

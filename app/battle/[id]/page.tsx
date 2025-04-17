@@ -38,6 +38,11 @@ export default function BattlePage({ params }: { params: { id: string } }) {
         const data = await response.json();
         setBattle(data);
 
+        // Registrar visitante
+        await fetch(`/api/battles/${params.id}/visitor`, {
+          method: "POST",
+        });
+
         // Calcular número total de comparações possíveis
         const n = data.features.length;
         const totalPossibleComparisons = (n * (n - 1)) / 2;
@@ -93,6 +98,7 @@ export default function BattlePage({ params }: { params: { id: string } }) {
 
     // Se não permite votos múltiplos e já completou todas as comparações
     if (!battle.settings.allowMultipleVotes && hasVoted) {
+      router.push(`/battle/${battle.id}/results`);
       return;
     }
 
@@ -121,6 +127,10 @@ export default function BattlePage({ params }: { params: { id: string } }) {
       // Verificar se completou todas as comparações
       if (newVoteCount >= totalComparisons) {
         setHasVoted(true);
+        if (!battle.settings.allowMultipleVotes) {
+          router.push(`/battle/${battle.id}/results`);
+          return;
+        }
       }
 
       // Limpar seleção e avançar
