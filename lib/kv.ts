@@ -29,6 +29,8 @@ export async function createBattle(battle: BattleCreation): Promise<Battle> {
       compareImpact: battle.settings?.compareImpact ?? true,
       compareEase: battle.settings?.compareEase ?? true,
       compareConfidence: battle.settings?.compareConfidence ?? true,
+      allowMultipleVotes: battle.settings?.allowMultipleVotes ?? false,
+      showResults: battle.settings?.showResults ?? true,
     },
   };
 
@@ -62,4 +64,41 @@ export async function incrementVisitor(battleId: string): Promise<void> {
 
   battle.total_visitors++;
   await redis.set(`battle:${battleId}`, JSON.stringify(battle));
+}
+
+export async function updateBattle(
+  id: string,
+  battle: BattleCreation
+): Promise<Battle> {
+  const existingBattle = await getBattle(id);
+  if (!existingBattle) throw new Error("Battle not found");
+
+  const updatedBattle: Battle = {
+    ...existingBattle,
+    title: battle.title,
+    description: battle.description,
+    features: battle.features,
+    votes: battle.features.reduce(
+      (acc, feature) => ({
+        ...acc,
+        [feature]: existingBattle.votes[feature] || {
+          impact: 0,
+          ease: 0,
+          confidence: 0,
+          total: 0,
+        },
+      }),
+      {}
+    ),
+    settings: {
+      compareImpact: battle.settings?.compareImpact ?? true,
+      compareEase: battle.settings?.compareEase ?? true,
+      compareConfidence: battle.settings?.compareConfidence ?? true,
+      allowMultipleVotes: battle.settings?.allowMultipleVotes ?? false,
+      showResults: battle.settings?.showResults ?? true,
+    },
+  };
+
+  await redis.set(`battle:${id}`, JSON.stringify(updatedBattle));
+  return updatedBattle;
 }

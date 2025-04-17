@@ -25,6 +25,7 @@ export default function BattleResultsPage({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [scores, setScores] = useState<FeatureScore[]>([]);
+  const [showCopyMessage, setShowCopyMessage] = useState(false);
 
   useEffect(() => {
     const loadBattle = async () => {
@@ -35,6 +36,12 @@ export default function BattleResultsPage({
         }
         const data: Battle = await response.json();
         setBattle(data);
+
+        // Se não permitir ver resultados, redirecionar para a página da batalha
+        if (!data.settings.showResults) {
+          window.location.href = `/battle/${params.id}`;
+          return;
+        }
 
         // Calcular scores
         const featureScores: FeatureScore[] = Object.entries(data.votes).map(
@@ -62,6 +69,13 @@ export default function BattleResultsPage({
 
     loadBattle();
   }, [params.id]);
+
+  const handleShare = () => {
+    const url = window.location.href.replace(/\/results$/, "");
+    navigator.clipboard.writeText(url);
+    setShowCopyMessage(true);
+    setTimeout(() => setShowCopyMessage(false), 3000);
+  };
 
   if (isLoading) {
     return (
@@ -206,21 +220,29 @@ export default function BattleResultsPage({
           </div>
 
           <div className="flex justify-center gap-4 mt-8">
-            <Link href={`/battle/${battle.id}`}>
-              <Button className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105">
-                Continuar Votando
-              </Button>
-            </Link>
+            {!battle.settings.allowMultipleVotes &&
+              JSON.parse(localStorage.getItem(`votes_${battle.id}`) || "0") <
+                (battle.features.length * (battle.features.length - 1)) / 2 && (
+                <Link href={`/battle/${battle.id}`}>
+                  <Button className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105">
+                    Continuar Votando
+                  </Button>
+                </Link>
+              )}
 
-            <Button
-              onClick={() => {
-                const url = window.location.href;
-                navigator.clipboard.writeText(url);
-              }}
-              className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105"
-            >
-              Compartilhar
-            </Button>
+            <div className="relative">
+              <Button
+                onClick={handleShare}
+                className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105"
+              >
+                Compartilhar
+              </Button>
+              {showCopyMessage && (
+                <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-[#0BFFFF]/20 text-[#0BFFFF] px-4 py-2 rounded-lg text-sm backdrop-blur-sm border border-[#0BFFFF]/30">
+                  Link copiado!
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </main>

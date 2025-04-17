@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Particles from "@/components/Particles";
 import Link from "next/link";
 import { useLanguage } from "@/app/i18n/LanguageContext";
+import { Battle } from "@/types/battle";
 
-export default function NewBattlePage() {
+export default function EditBattlePage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,6 +26,31 @@ export default function NewBattlePage() {
       showResults: true,
     },
   });
+
+  useEffect(() => {
+    // Carregar dados da batalha do localStorage
+    const storedBattles = JSON.parse(
+      localStorage.getItem("user_battles") || "[]"
+    );
+    const battle = storedBattles.find((b: Battle) => b.id === params.id);
+
+    if (battle) {
+      setFormData({
+        title: battle.title,
+        description: battle.description || "",
+        features: battle.features.join("\n"),
+        settings: {
+          compareImpact: battle.settings.compareImpact,
+          compareEase: battle.settings.compareEase,
+          compareConfidence: battle.settings.compareConfidence,
+          allowMultipleVotes: battle.settings.allowMultipleVotes || false,
+          showResults: battle.settings.showResults || true,
+        },
+      });
+    } else {
+      setError("Batalha não encontrada");
+    }
+  }, [params.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,8 +70,8 @@ export default function NewBattlePage() {
         );
       }
 
-      const response = await fetch("/api/battles", {
-        method: "POST",
+      const response = await fetch(`/api/battles/${params.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -59,19 +85,25 @@ export default function NewBattlePage() {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || "Erro ao criar batalha");
+        throw new Error(data.error || "Erro ao atualizar batalha");
       }
 
-      const battle = await response.json();
+      const updatedBattle = await response.json();
 
-      // Salvar no localStorage
+      // Atualizar no localStorage
       const storedBattles = JSON.parse(
         localStorage.getItem("user_battles") || "[]"
       );
-      storedBattles.push(battle);
-      localStorage.setItem("user_battles", JSON.stringify(storedBattles));
+      const battleIndex = storedBattles.findIndex(
+        (b: Battle) => b.id === params.id
+      );
 
-      router.push(`/battle/${battle.id}`);
+      if (battleIndex !== -1) {
+        storedBattles[battleIndex] = updatedBattle;
+        localStorage.setItem("user_battles", JSON.stringify(storedBattles));
+      }
+
+      router.push(`/battle/${params.id}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido");
     } finally {
@@ -274,7 +306,7 @@ export default function NewBattlePage() {
             )}
 
             <div className="flex justify-center gap-4">
-              <Link href="/">
+              <Link href="/my-battles">
                 <Button
                   type="button"
                   className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105"
@@ -290,7 +322,7 @@ export default function NewBattlePage() {
                   isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
-                {isSubmitting ? "Criando..." : "Criar Batalha"}
+                {isSubmitting ? "Salvando..." : "Salvar Alterações"}
               </Button>
             </div>
           </form>

@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/app/i18n/LanguageContext";
 import { createPairs } from "@/app/(main)/utils/feature-storage";
+import PixelCard from "../components/PixelCard";
 
 export default function BattlePage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -22,8 +23,11 @@ export default function BattlePage({ params }: { params: { id: string } }) {
   const [comparisonType, setComparisonType] = useState<
     "impact" | "ease" | "confidence"
   >("impact");
+  const [hasVoted, setHasVoted] = useState(false);
+  const [totalComparisons, setTotalComparisons] = useState(0);
+  const [userVoteCount, setUserVoteCount] = useState(0);
 
-  // Carregar batalha
+  // Carregar batalha e verificar se já votou
   useEffect(() => {
     const loadBattle = async () => {
       try {
@@ -34,8 +38,22 @@ export default function BattlePage({ params }: { params: { id: string } }) {
         const data = await response.json();
         setBattle(data);
 
+        // Calcular número total de comparações possíveis
+        const n = data.features.length;
+        const totalPossibleComparisons = (n * (n - 1)) / 2;
+        setTotalComparisons(totalPossibleComparisons);
+
+        // Carregar contagem de votos do usuário
+        const userVotes = JSON.parse(
+          localStorage.getItem(`votes_${params.id}`) || "0"
+        );
+        setUserVoteCount(userVotes);
+
+        // Verificar se já completou todas as comparações
+        setHasVoted(userVotes >= totalPossibleComparisons);
+
         // Criar pares de features
-        const pairs = createPairs(data.features);
+        const pairs = createPairs(data.features) as [string, string][];
         setFeaturePairs(pairs);
 
         setIsLoading(false);
@@ -73,6 +91,11 @@ export default function BattlePage({ params }: { params: { id: string } }) {
   const handleSelection = async (selectedFeature: string) => {
     if (!currentPair || !battle) return;
 
+    // Se não permite votos múltiplos e já completou todas as comparações
+    if (!battle.settings.allowMultipleVotes && hasVoted) {
+      return;
+    }
+
     setCurrentSelection(selectedFeature);
     const rejectedFeature =
       currentPair[0] === selectedFeature ? currentPair[1] : currentPair[0];
@@ -89,6 +112,16 @@ export default function BattlePage({ params }: { params: { id: string } }) {
           type: comparisonType,
         }),
       });
+
+      // Atualizar contagem de votos do usuário
+      const newVoteCount = userVoteCount + 1;
+      localStorage.setItem(`votes_${battle.id}`, JSON.stringify(newVoteCount));
+      setUserVoteCount(newVoteCount);
+
+      // Verificar se completou todas as comparações
+      if (newVoteCount >= totalComparisons) {
+        setHasVoted(true);
+      }
 
       // Limpar seleção e avançar
       setCurrentSelection(null);
@@ -143,6 +176,26 @@ export default function BattlePage({ params }: { params: { id: string } }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
+      <style jsx global>{`
+        @keyframes scanAnimation {
+          0% {
+            left: -25%;
+          }
+          100% {
+            left: 100%;
+          }
+        }
+        @keyframes pulse {
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.4;
+          }
+        }
+      `}</style>
+
       <div className="absolute inset-0">
         <Particles
           particleCount={200}
@@ -178,9 +231,76 @@ export default function BattlePage({ params }: { params: { id: string } }) {
         {currentPair && (
           <>
             <div className="text-center mb-8">
-              <h3 className="text-2xl font-medium text-[#0BFFFF]">
+              <h3
+                className={`text-2xl font-medium ${
+                  comparisonType === "impact"
+                    ? "text-[#FF5757]"
+                    : comparisonType === "ease"
+                    ? "text-[#4CAF50]"
+                    : "text-[#0BFFFF]"
+                }`}
+              >
                 {getComparisonQuestion(comparisonType)}
               </h3>
+              {!battle.settings.allowMultipleVotes && hasVoted && (
+                <p className="text-emerald-400 mt-2 flex items-center justify-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Você completou todas as comparações possíveis!
+                </p>
+              )}
+
+              {/* Barra de Progresso */}
+              <div className="mt-4 max-w-md mx-auto">
+                <div className="flex justify-between items-center mb-2">
+                  <div className="flex items-center">
+                    <div className="w-2 h-2 rounded-full bg-[#0BFFFF] mr-2 animate-pulse"></div>
+                    <span className="text-sm font-medium text-[#0BFFFF] uppercase tracking-widest">
+                      Progresso
+                    </span>
+                  </div>
+                  <div className="bg-black/60 px-3 py-1 rounded-md border border-[#0BFFFF]/40 text-sm font-mono">
+                    <span className="text-white">{userVoteCount}</span>
+                    <span className="text-gray-400">/</span>
+                    <span className="text-[#0BFFFF]">{totalComparisons}</span>
+                  </div>
+                </div>
+
+                <div className="w-full bg-black/40 border border-[#0BFFFF]/30 rounded-md h-5 relative overflow-hidden backdrop-blur-sm shadow-[0_0_10px_rgba(11,255,255,0.2)]">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#0BFFFF] via-[#00BFFF] to-[#0BFFFF] rounded-sm transition-all duration-500 ease-out relative overflow-hidden"
+                    style={{
+                      width: `${Math.min(
+                        (userVoteCount / totalComparisons) * 100,
+                        100
+                      )}%`,
+                    }}
+                  >
+                    {/* Scan line animation */}
+                    <div
+                      className="absolute h-full w-1/4 bg-[#5CFFFF] opacity-40 blur-sm"
+                      style={{
+                        animation: "scanAnimation 2s linear infinite",
+                        transform: "skewX(45deg)",
+                      }}
+                    />
+                  </div>
+
+                  {/* Edge reflections */}
+                  <div className="absolute top-0 left-0 w-1 h-full bg-[#0BFFFF]/40"></div>
+                  <div className="absolute top-0 right-0 w-1 h-full bg-[#0BFFFF]/40"></div>
+                </div>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-5xl mx-auto px-4 md:px-8 place-items-center">
@@ -188,7 +308,10 @@ export default function BattlePage({ params }: { params: { id: string } }) {
                 <div
                   key={index}
                   onClick={() => {
-                    if (!currentSelection) {
+                    if (
+                      !currentSelection &&
+                      (!hasVoted || battle.settings.allowMultipleVotes)
+                    ) {
                       handleSelection(feature);
                     }
                   }}
@@ -197,27 +320,40 @@ export default function BattlePage({ params }: { params: { id: string } }) {
                       ? "scale-105"
                       : currentSelection && currentSelection !== feature
                       ? "opacity-50 scale-95"
+                      : !battle.settings.allowMultipleVotes && hasVoted
+                      ? "opacity-50 cursor-not-allowed"
                       : ""
                   }`}
                 >
-                  <div className="w-full aspect-[4/3] bg-black/40 border border-[#0BFFFF]/30 rounded-lg shadow-lg shadow-[#0BFFFF]/10 backdrop-blur-sm hover:shadow-[#0BFFFF]/20 hover:scale-[1.02] transition-all flex items-center justify-center p-8">
-                    <p className="text-gray-400 text-4xl font-medium text-center tracking-tight">
-                      {feature}
-                    </p>
-                  </div>
+                  <PixelCard
+                    variant="blue"
+                    gap={6}
+                    speed={40}
+                    colors="#0BFFFF,#0ea5e9,#e0f2fe"
+                    className="w-full"
+                    tabIndex={-1}
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center p-8 z-20">
+                      <p className="text-gray-400 text-4xl font-medium text-center tracking-tight">
+                        {feature}
+                      </p>
+                    </div>
+                  </PixelCard>
                 </div>
               ))}
             </div>
           </>
         )}
 
-        <div className="flex justify-center mt-12">
-          <Link href={`/battle/${battle.id}/results`}>
-            <Button className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105">
-              Ver Resultados
-            </Button>
-          </Link>
-        </div>
+        {battle.settings.showResults && (
+          <div className="flex justify-center mt-12">
+            <Link href={`/battle/${battle.id}/results`}>
+              <Button className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-6 text-lg font-medium border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-105">
+                Ver Resultados
+              </Button>
+            </Link>
+          </div>
+        )}
       </main>
     </div>
   );

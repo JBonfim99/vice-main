@@ -136,6 +136,12 @@ export default function Home() {
                 >
                   Criar Batalha
                 </Link>
+                <Link
+                  href="/my-battles"
+                  className="bg-[#0BFFFF]/10 text-[#0BFFFF] hover:bg-[#0BFFFF]/20 transition-all px-8 py-3 rounded-lg font-semibold border border-[#0BFFFF]/40 shadow-lg shadow-[#0BFFFF]/20 hover:scale-[1.02]"
+                >
+                  Minhas Batalhas
+                </Link>
               </div>
             </div>
           </div>
