@@ -76,7 +76,7 @@ export default function BattlePage({ params }: { params: { id: string } }) {
     };
 
     loadBattle();
-  }, [params.id]);
+  }, [params.id, t]);
 
   // Atualizar par atual
   useEffect(() => {

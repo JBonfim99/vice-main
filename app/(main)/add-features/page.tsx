@@ -61,7 +61,6 @@ export default function AddFeaturesPage() {
   const router = useRouter();
   const { t } = useLanguage();
   const [isPending, startTransition] = useTransition();
-  const [extractedFeatures, setExtractedFeatures] = useState<string[]>([]);
   const [currentFeatures, setCurrentFeatures] = useState<string>("");
   const [savedFeatureCount, setSavedFeatureCount] = useState<number>(0);
   const [hasExistingFeatures, setHasExistingFeatures] =
@@ -97,8 +96,6 @@ export default function AddFeaturesPage() {
       // Use the utility function from feature-storage.ts to save features
       // This ensures ELO ratings are preserved for existing features
       saveFeaturesToStorage(features);
-      setExtractedFeatures(features);
-      setSavedFeatureCount(features.length);
       console.log("Saved features to localStorage:", features);
     }
 

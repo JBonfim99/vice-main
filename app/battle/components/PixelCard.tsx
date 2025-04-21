@@ -274,11 +274,11 @@ export default function PixelCard({
 
   const onMouseEnter = () => handleAnimation("appear");
   const onMouseLeave = () => handleAnimation("disappear");
-  const onFocus: React.FocusEventHandler<HTMLDivElement> = (e) => {
-    if (!finalNoFocus) onMouseEnter();
+  const onFocus = () => {
+    handleAnimation("appear");
   };
-  const onBlur: React.FocusEventHandler<HTMLDivElement> = (e) => {
-    if (!finalNoFocus) onMouseLeave();
+  const onBlur = () => {
+    handleAnimation("disappear");
   };
 
   useEffect(() => {
@@ -288,7 +288,7 @@ export default function PixelCard({
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, []);
+  }, [initPixels]);
 
   return (
     <div

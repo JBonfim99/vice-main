@@ -11,7 +11,6 @@ import { Battle } from "@/types/battle";
 
 export default function EditBattlePage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const { t } = useLanguage();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({

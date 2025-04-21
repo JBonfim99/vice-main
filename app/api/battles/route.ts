@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { createBattle, getBattle, recordVote } from "@/lib/kv";
-import { BattleCreation, BattleVote } from "@/types/battle";
+import { createBattle, getBattle } from "@/lib/kv";
+import { BattleCreation } from "@/types/battle";
 
 export async function POST(req: Request) {
   try {
