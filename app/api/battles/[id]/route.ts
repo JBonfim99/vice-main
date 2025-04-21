@@ -1,13 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { updateBattle, deleteBattle } from "@/lib/kv";
 import { BattleCreation } from "@/types/battle";
 
 export async function PUT(
-  req: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const battleData: BattleCreation = await req.json();
+    const battleData: BattleCreation = await request.json();
 
     // Validações básicas
     if (!battleData.title) {
@@ -33,7 +33,7 @@ export async function PUT(
 }
 
 export async function DELETE(
-  req: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
