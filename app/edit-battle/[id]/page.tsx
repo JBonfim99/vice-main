@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import Particles from "@/components/Particles";
 import Link from "next/link";
-import { useLanguage } from "@/app/i18n/LanguageContext";
 import { Battle } from "@/types/battle";
 
 export default function EditBattlePage({ params }: { params: { id: string } }) {

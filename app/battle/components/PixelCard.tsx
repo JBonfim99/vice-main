@@ -195,48 +195,56 @@ export default function PixelCard({
   const finalGap = gap ?? variantCfg.gap;
   const finalSpeed = speed ?? variantCfg.speed;
   const finalColors = colors ?? variantCfg.colors;
-  const finalNoFocus = noFocus ?? variantCfg.noFocus;
 
-  const initPixels = () => {
-    if (!containerRef.current || !canvasRef.current) return;
+  useEffect(() => {
+    const initPixels = () => {
+      if (!containerRef.current || !canvasRef.current) return;
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const width = Math.floor(rect.width);
-    const height = Math.floor(rect.height);
-    const ctx = canvasRef.current.getContext("2d");
+      const rect = containerRef.current.getBoundingClientRect();
+      const width = Math.floor(rect.width);
+      const height = Math.floor(rect.height);
+      const ctx = canvasRef.current.getContext("2d");
 
-    canvasRef.current.width = width;
-    canvasRef.current.height = height;
-    canvasRef.current.style.width = `${width}px`;
-    canvasRef.current.style.height = `${height}px`;
+      canvasRef.current.width = width;
+      canvasRef.current.height = height;
+      canvasRef.current.style.width = `${width}px`;
+      canvasRef.current.style.height = `${height}px`;
 
-    const colorsArray = finalColors.split(",");
-    const pxs = [];
-    for (let x = 0; x < width; x += parseInt(finalGap.toString(), 10)) {
-      for (let y = 0; y < height; y += parseInt(finalGap.toString(), 10)) {
-        const color =
-          colorsArray[Math.floor(Math.random() * colorsArray.length)];
+      const colorsArray = finalColors.split(",");
+      const pxs = [];
+      for (let x = 0; x < width; x += parseInt(finalGap.toString(), 10)) {
+        for (let y = 0; y < height; y += parseInt(finalGap.toString(), 10)) {
+          const color =
+            colorsArray[Math.floor(Math.random() * colorsArray.length)];
 
-        const dx = x - width / 2;
-        const dy = y - height / 2;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const delay = reducedMotion ? 0 : distance;
-        if (!ctx) return;
-        pxs.push(
-          new Pixel(
-            canvasRef.current,
-            ctx,
-            x,
-            y,
-            color,
-            getEffectiveSpeed(finalSpeed, reducedMotion),
-            delay
-          )
-        );
+          const dx = x - width / 2;
+          const dy = y - height / 2;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const delay = reducedMotion ? 0 : distance;
+          if (!ctx) return;
+          pxs.push(
+            new Pixel(
+              canvasRef.current,
+              ctx,
+              x,
+              y,
+              color,
+              getEffectiveSpeed(finalSpeed, reducedMotion),
+              delay
+            )
+          );
+        }
       }
-    }
-    pixelsRef.current = pxs;
-  };
+      pixelsRef.current = pxs;
+    };
+
+    initPixels();
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [finalColors, finalGap, finalSpeed, reducedMotion]);
 
   const doAnimate = (fnName: keyof Pixel) => {
     animationRef.current = requestAnimationFrame(() => doAnimate(fnName));
@@ -280,15 +288,6 @@ export default function PixelCard({
   const onBlur = () => {
     handleAnimation("disappear");
   };
-
-  useEffect(() => {
-    initPixels();
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [initPixels]);
 
   return (
     <div
