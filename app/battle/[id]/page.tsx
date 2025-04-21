@@ -10,7 +10,12 @@ import { useLanguage } from "@/app/i18n/LanguageContext";
 import { createPairs } from "@/app/(main)/utils/feature-storage";
 import PixelCard from "../components/PixelCard";
 
-export default function BattlePage({ params }: { params: { id: string } }) {
+export default function BattlePage({
+  params,
+}: {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const router = useRouter();
   const { t } = useLanguage();
   const [battle, setBattle] = useState<Battle | null>(null);

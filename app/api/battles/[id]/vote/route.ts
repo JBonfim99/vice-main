@@ -1,13 +1,14 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextFetchEvent } from "next/server";
 import { recordVote } from "@/lib/kv";
 import { BattleVote } from "@/types/battle";
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  event: NextFetchEvent & { params: { id: string } }
 ) {
   try {
     const voteData = await req.json();
+    const { id } = event.params;
 
     // Validações básicas
     if (!voteData.winner || !voteData.loser || !voteData.type) {
@@ -18,7 +19,7 @@ export async function POST(
     }
 
     const vote: BattleVote = {
-      battleId: params.id,
+      battleId: id,
       winner: voteData.winner,
       loser: voteData.loser,
       type: voteData.type,

@@ -8,7 +8,12 @@ import Particles from "@/components/Particles";
 import Link from "next/link";
 import { Battle } from "@/types/battle";
 
-export default function EditBattlePage({ params }: { params: { id: string } }) {
+export default function EditBattlePage({
+  params,
+}: {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

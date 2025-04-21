@@ -19,6 +19,7 @@ export default function BattleResultsPage({
   params,
 }: {
   params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const { t } = useLanguage();
   const [battle, setBattle] = useState<Battle | null>(null);
